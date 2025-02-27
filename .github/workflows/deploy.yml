@@ -1,0 +1,35 @@
+name: CI/CD Pipeline Demo
+
+on:
+  push:
+    branches:
+      - main  # Runs on every push to main
+
+jobs:
+  update-stage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Update Deployment Stage
+        run: |
+          STAGE=$(jq -r '.stage' config.json)
+          if [[ "$STAGE" == "Development" ]]; then
+            echo '{ "stage": "Testing" }' > config.json
+          elif [[ "$STAGE" == "Testing" ]]; then
+            echo '{ "stage": "Staging" }' > config.json
+          elif [[ "$STAGE" == "Staging" ]]; then
+            echo '{ "stage": "Production" }' > config.json
+          else
+            echo '{ "stage": "Development" }' > config.json
+          fi
+          echo "Stage updated!"
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git add config.json
+          git commit -m "CI/CD: Updated deployment stage"
+          git push
