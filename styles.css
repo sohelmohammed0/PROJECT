@@ -1,0 +1,69 @@
+/* General Styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    transition: background-color 1s ease-in-out;
+    overflow: hidden;
+}
+
+/* Main Container */
+.container {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 1s ease-in-out;
+    backdrop-filter: blur(10px);
+}
+
+/* Heading */
+h1 {
+    font-size: 28px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    color: white;
+}
+
+/* Description */
+.description {
+    font-size: 16px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* Status Box */
+#status-box {
+    padding: 15px;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    color: white;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Color Themes for Stages */
+body.development { background-color: #3498db; } /* Blue */
+body.testing { background-color: #f1c40f; }     /* Yellow */
+body.staging { background-color: #e67e22; }     /* Orange */
+body.production { background-color: #2ecc71; }  /* Green */
+
+#status-box.development { background-color: rgba(0, 0, 139, 0.6); } /* Dark Blue */
+#status-box.testing { background-color: rgba(255, 204, 0, 0.6); }  /* Dark Yellow */
+#status-box.staging { background-color: rgba(255, 87, 34, 0.6); }  /* Dark Orange */
+#status-box.production { background-color: rgba(0, 128, 0, 0.6); } /* Dark Green */
