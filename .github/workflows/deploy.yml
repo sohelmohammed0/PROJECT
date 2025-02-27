@@ -1,12 +1,12 @@
-name: CI/CD Pipeline Demo
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main  # Runs on every push to main
+      - main
 
 jobs:
-  update-stage:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -14,22 +14,18 @@ jobs:
 
       - name: Update Deployment Stage
         run: |
-          STAGE=$(jq -r '.stage' config.json)
-          if [[ "$STAGE" == "Development" ]]; then
-            echo '{ "stage": "Testing" }' > config.json
-          elif [[ "$STAGE" == "Testing" ]]; then
-            echo '{ "stage": "Staging" }' > config.json
-          elif [[ "$STAGE" == "Staging" ]]; then
-            echo '{ "stage": "Production" }' > config.json
+          if grep -q '"Development"' config.json; then
+            sed -i 's/"Development"/"Testing"/g' config.json
+          elif grep -q '"Testing"' config.json; then
+            sed -i 's/"Testing"/"Production"/g' config.json
           else
-            echo '{ "stage": "Development" }' > config.json
+            sed -i 's/"Production"/"Development"/g' config.json
           fi
-          echo "Stage updated!"
 
-      - name: Commit and Push Changes
+      - name: Commit Changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@github.com"
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
           git add config.json
-          git commit -m "CI/CD: Updated deployment stage"
+          git commit -m "Updated deployment stage"
           git push
